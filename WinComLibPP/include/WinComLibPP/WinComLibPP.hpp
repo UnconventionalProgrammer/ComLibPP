@@ -221,9 +221,9 @@ private:
     {
         switch (m_Policy.mode)
         {
-            case TimeoutMode::blocking:     return std::chrono::milliseconds{-1}; // sentinel: block forever
-            case TimeoutMode::finite:       return m_Policy.readTimeout;
-            case TimeoutMode::nonBlocking:  return std::chrono::milliseconds{0};
+            case Driver::TimeoutMode::blocking:     return std::chrono::milliseconds{-1}; // sentinel: block forever
+            case Driver::TimeoutMode::finite:       return m_Policy.readTimeout;
+            case Driver::TimeoutMode::nonBlocking:  return std::chrono::milliseconds{0};
         }
         return m_Policy.readTimeout;
     }
@@ -232,9 +232,9 @@ private:
     {
         switch (m_Policy.mode)
         {
-            case TimeoutMode::blocking:     return std::chrono::milliseconds{-1};
-            case TimeoutMode::finite:       return m_Policy.writeTimeout;
-            case TimeoutMode::nonBlocking:  return std::chrono::milliseconds{0};
+            case Driver::TimeoutMode::blocking:     return std::chrono::milliseconds{-1};
+            case Driver::TimeoutMode::finite:       return m_Policy.writeTimeout;
+            case Driver::TimeoutMode::nonBlocking:  return std::chrono::milliseconds{0};
         }
         return m_Policy.writeTimeout;
     }
@@ -254,13 +254,13 @@ class WINCOMLIBPP_API SerialStream final : public std::iostream
 {
 public:
     explicit SerialStream(Driver& driver,
-                          TimeoutPolicy policy = {},
+                          Driver::TimeoutPolicy policy = {},
                           std::size_t getBufSize = 4096,
                           std::size_t putBufSize = 4096)
         : std::iostream(nullptr),
           m_Buf(driver, policy, getBufSize, putBufSize)
     {
-        rdbuf(&m_Buf);
+        std::iostream::rdbuf(&m_Buf);
         unsetf(std::ios::skipws); // binary-friendly
     }
 
@@ -274,3 +274,6 @@ private:
 };
 
 } // namespace wincom
+
+
+#endif

@@ -1,16 +1,59 @@
 cmake_minimum_required(VERSION 3.21)
 project(WinComLibPP VERSION 1.0.0 LANGUAGES CXX)
 
-option(WINCOMLIBPP_BUILD_SHARED "Build shared library" OFF)
-option(WINCOMLIBPP_BUILD_SHARED  "Build tests" OFF)
-option(WINCOMLIBPP_BUILD_SHARED "Treat warnings as errors" ON)
+option(WINCOMLIBPP_BUILD_SHARED        "Build shared library"          OFF)
+option(WINCOMLIBPP_BUILD_TESTS         "Build tests"                   OFF)
+option(WINCOMLIBPP_WARNINGS_AS_ERRORS  "Treat warnings as errors"      ON)
+
+
+# Figure out if building static or shared
+set(LIB_KIND "static")
+if (BUILD_SHARED_LIBS OR WINCOMLIBPP_BUILD_SHARED)
+    set(LIB_KIND "shared")
+endif()
+
+# Handle multi-config generators (Visual Studio, Xcode, etc.)
+foreach(OUTPUTCONFIG Debug Release RelWithDebInfo MinSizeRel)
+    string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG_UPPER)
+
+    # Library outputs
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER}
+            ${CMAKE_BINARY_DIR}/bin/${LIB_KIND}/${OUTPUTCONFIG})
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER}
+            ${CMAKE_BINARY_DIR}/bin/${LIB_KIND}/${OUTPUTCONFIG})
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER}
+            ${CMAKE_BINARY_DIR}/bin/${LIB_KIND}/${OUTPUTCONFIG})
+endforeach()
+
+# Helper: put an example exe in bin/example/<config>
+function(set_example_output target)
+    foreach(OUTPUTCONFIG Debug Release RelWithDebInfo MinSizeRel)
+        string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG_UPPER)
+        set_target_properties(${target} PROPERTIES
+                RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER}
+                ${CMAKE_BINARY_DIR}/bin/example/${OUTPUTCONFIG}
+        )
+    endforeach()
+endfunction()
+
+# Helper: put a test exe in bin/test/<config>
+function(set_test_output target)
+    foreach(OUTPUTCONFIG Debug Release RelWithDebInfo MinSizeRel)
+        string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG_UPPER)
+        set_target_properties(${target} PROPERTIES
+                RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER}
+                ${CMAKE_BINARY_DIR}/bin/test/${OUTPUTCONFIG}
+        )
+    endforeach()
+endfunction()
+
 
 # Library
 set(WINCOMLIBPP_HEADERS
         include/WinComLibPP/WinComLibPP.hpp
         include/WinComLibPP/export.hpp
         include/WinComLibPP/ISerialDriver.hpp
-        include/WinComLibPP/Win32SerialDriver.h
+        include/WinComLibPP/Win32SerialDriver.hpp
 )
 
 if (WINCOMLIBPP_BUILD_SHARED)
@@ -78,8 +121,9 @@ install(FILES
 )
 
 # Examples
-#add_executable(example_minimal examples/minimal.cpp)
-#target_link_libraries(example_minimal PRIVATE jnz::WinComLibPP)
+add_executable(example_minimal example/minimal.cpp)
+target_link_libraries(example_minimal PRIVATE jnz::WinComLibPP)
+set_example_output(example_minimal)
 
 # Tests
 #include(CTest)
