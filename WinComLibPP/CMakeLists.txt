@@ -9,6 +9,8 @@ option(WINCOMLIBPP_BUILD_SHARED "Treat warnings as errors" ON)
 set(WINCOMLIBPP_HEADERS
         include/WinComLibPP/WinComLibPP.hpp
         include/WinComLibPP/export.hpp
+        include/WinComLibPP/ISerialDriver.hpp
+        include/WinComLibPP/Win32SerialDriver.h
 )
 
 if (WINCOMLIBPP_BUILD_SHARED)
