@@ -20,16 +20,9 @@
 #include "ISerialDriver.hpp"
 #include "export.hpp"
 
-// ------------------------------
-// Errors
-// ------------------------------
 namespace wincom
 {
 
-
-// ------------------------------
-// Streambuf (platform-agnostic) using a driver
-// ------------------------------
 template <class Driver>
 class SerialStreamBuf final : public std::streambuf
 {

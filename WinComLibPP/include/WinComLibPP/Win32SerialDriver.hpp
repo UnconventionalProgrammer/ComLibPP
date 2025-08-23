@@ -14,27 +14,28 @@
 #define NOMINMAX
 #endif
 #include <windows.h>
+
+#include <utility>
 #include "ISerialDriver.hpp"
 #include "export.hpp"
 
 namespace wincom
 {
-
 class WINCOMLIBPP_API Win32Serial final : public ISerialDriver
 {
 public:
-    Win32Serial() = default;
+    Win32Serial(std::string portName, const SerialSettings &settings, const TimeoutPolicy &timeoutPolicy)
+    {
+        this->open(std::move(portName), settings, timeoutPolicy);
+    }
     ~Win32Serial() override
     {
         Win32Serial::close();
     }
 
-    void open(std::string portName) override
+    void open(std::string portName, const SerialSettings &settings, const TimeoutPolicy &timeoutPolicy) override
     {
         close();
-
-        // Accept "COM3" or "\\\\.\\COM10"
-;
         if (portName.rfind(R"(\\.\)", 0) != 0)
         {
             portName = R"(\\.\)" + portName;
@@ -50,11 +51,8 @@ public:
             throwLastError_("CreateFileA");
         }
 
-        // reasonable default DCB; user can change via setLineCoding()
-        setLineCoding(115200, 8, Parity::none, StopBits::one);
-
-        // default timeouts; user can change via setTimeouts()
-        setTimeouts(m_Policy);
+        setLineCoding(settings);
+        setTimeouts(timeoutPolicy);
 
         // clear buffers
         SetupComm(m_Handle, 1 << 16, 1 << 16);
@@ -76,7 +74,7 @@ public:
         }
     }
 
-    void setLineCoding(const uint32_t baud, const uint8_t dataBits, const Parity parity, const StopBits stopBits) override
+    void setLineCoding(const SerialSettings &settings) override
     {
         if (!isOpen())
         {
@@ -90,10 +88,10 @@ public:
             throwLastError_("GetCommState");
         }
 
-        dcb.BaudRate = baud;
-        dcb.ByteSize = dataBits;
-        dcb.Parity   = toWinParity_(parity);
-        dcb.StopBits = toWinStopBits_(stopBits);
+        dcb.BaudRate = settings.baud;
+        dcb.ByteSize = settings.dataBits;
+        dcb.Parity   = toWinParity_(settings.parity);
+        dcb.StopBits = toWinStopBits_(settings.stopBits);
 
         dcb.fOutxCtsFlow = FALSE;
         dcb.fOutxDsrFlow = FALSE;

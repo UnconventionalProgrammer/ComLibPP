@@ -31,17 +31,24 @@ public:
         std::chrono::milliseconds writeTimeout { 200 };
     };
 
+    struct SerialSettings
+    {
+        uint32_t baud{115200};
+        uint8_t dataBits{8};
+        Parity parity{Parity::none};
+        StopBits stopBits{StopBits::one};
+
+    };
+
     virtual ~ISerialDriver() = default;
 
     // open/close
-    virtual void open(std::string portName) = 0;
+    virtual void open(std::string portName, const SerialSettings &settings, const TimeoutPolicy &timeoutPolicy) = 0;
     [[nodiscard]] virtual bool isOpen() const = 0;
     virtual void close() = 0;
 
-    // config
-    virtual void setLineCoding(uint32_t baud, uint8_t dataBits, Parity parity, StopBits stopBits) = 0;
+    virtual void setLineCoding(const SerialSettings &settings) = 0;
     virtual void setTimeouts(const TimeoutPolicy& policy) = 0;
-
     // io
     // read up to maxBytes; returns bytes read (0 == timeout/non-blocking no data)
     virtual std::size_t readSome(uint8_t* dst, std::size_t maxBytes,

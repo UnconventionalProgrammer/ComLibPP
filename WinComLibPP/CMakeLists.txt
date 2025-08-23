@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(WinComLibPP VERSION 1.0.0 LANGUAGES CXX)
+project(WinComLibPP VERSION 0.1.0 LANGUAGES CXX)
 
 option(WINCOMLIBPP_BUILD_SHARED        "Build shared library"          OFF)
 option(WINCOMLIBPP_BUILD_TESTS         "Build tests"                   OFF)
@@ -18,11 +18,11 @@ foreach(OUTPUTCONFIG Debug Release RelWithDebInfo MinSizeRel)
 
     # Library outputs
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER}
-            ${CMAKE_BINARY_DIR}/bin/${LIB_KIND}/${OUTPUTCONFIG})
+            ${CMAKE_SOURCE_DIR}/bin/${LIB_KIND}/${OUTPUTCONFIG})
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER}
-            ${CMAKE_BINARY_DIR}/bin/${LIB_KIND}/${OUTPUTCONFIG})
+            ${CMAKE_SOURCE_DIR}/bin/${LIB_KIND}/${OUTPUTCONFIG})
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER}
-            ${CMAKE_BINARY_DIR}/bin/${LIB_KIND}/${OUTPUTCONFIG})
+            ${CMAKE_SOURCE_DIR}/bin/${LIB_KIND}/${OUTPUTCONFIG})
 endforeach()
 
 # Helper: put an example exe in bin/example/<config>
@@ -31,7 +31,7 @@ function(set_example_output target)
         string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG_UPPER)
         set_target_properties(${target} PROPERTIES
                 RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER}
-                ${CMAKE_BINARY_DIR}/bin/example/${OUTPUTCONFIG}
+                ${CMAKE_SOURCE_DIR}/bin/example/${OUTPUTCONFIG}
         )
     endforeach()
 endfunction()
@@ -42,7 +42,7 @@ function(set_test_output target)
         string(TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG_UPPER)
         set_target_properties(${target} PROPERTIES
                 RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG_UPPER}
-                ${CMAKE_BINARY_DIR}/bin/test/${OUTPUTCONFIG}
+                ${CMAKE_SOURCE_DIR}/bin/test/${OUTPUTCONFIG}
         )
     endforeach()
 endfunction()
