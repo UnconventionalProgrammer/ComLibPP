@@ -144,8 +144,8 @@ install(FILES
 # -----------------------------------------
 # Examples (if present)
 # -----------------------------------------
-if (COMLIBPP_BUILD_EXAMPLES AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/examples/CMakeLists.txt")
-    add_subdirectory(examples)
+if (COMLIBPP_BUILD_EXAMPLES AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/example/CMakeLists.txt")
+    add_subdirectory(example)
 endif()
 
 # -----------------------------------------
