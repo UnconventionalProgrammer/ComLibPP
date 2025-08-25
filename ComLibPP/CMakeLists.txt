@@ -71,10 +71,10 @@ endfunction()
 file(GLOB_RECURSE COMLIBPP_SOURCES CONFIGURE_DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 set(COMLIBPP_PUBLIC_HEADERS
-        include/ucpgr/export.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/serial_stream.hpp
-        include/ucpgr/ISerialDriver.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/Win32Serial.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/ucpgr/export.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/ucpgr/ComLibPP.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/ucpgr/ISerialDriver.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/ucpgr/Win32Serial.hpp
 )
 
 if (COMLIBPP_BUILD_SHARED)
