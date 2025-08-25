@@ -1,4 +1,4 @@
-#include "WinComLibPP/WinComLibPP.hpp"
+#include "ComLibPP.hpp"
 
 wincom::SerialStreamBuf::SerialStreamBuf(ISerialDriver &driver)
         : m_Driver{driver},

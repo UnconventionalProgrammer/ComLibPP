@@ -2,10 +2,10 @@
 // Created by didal on 25/08/2025.
 //
 
-#ifndef WINCOMLIBPP_LOOPBACKDRIVER_H
-#define WINCOMLIBPP_LOOPBACKDRIVER_H
+#ifndef COMLIBPP_LOOPBACKDRIVER_H
+#define COMLIBPP_LOOPBACKDRIVER_H
 
-#include "WinComLibPP/ISerialDriver.hpp"
+#include "ISerialDriver.hpp"
 
 namespace wincom
 {
@@ -38,4 +38,4 @@ namespace wincom
     };
 }
 
-#endif //WINCOMLIBPP_LOOPBACKDRIVER_H
+#endif //COMLIBPP_LOOPBACKDRIVER_H

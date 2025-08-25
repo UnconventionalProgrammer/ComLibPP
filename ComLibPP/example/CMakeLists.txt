@@ -1,3 +1,3 @@
 add_executable(example_minimal examples/minimal.cpp)
-target_link_libraries(example_minimal PRIVATE wincom::WinComLibPP)
+target_link_libraries(example_minimal PRIVATE wincom::ComLibPP)
 wincom_set_example_output(example_minimal)

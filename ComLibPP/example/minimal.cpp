@@ -1,7 +1,7 @@
 #include <chrono>
 #include <format>
-#include "WinComLibPP/Win32SerialDriver.hpp"
-#include "WinComLibPP/WinComLibPP.hpp"
+#include "COMLIBPP/Win32SerialDriver.hpp"
+#include "COMLIBPP/COMLIBPP.hpp"
 
 using namespace std::chrono_literals;
 

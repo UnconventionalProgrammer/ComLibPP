@@ -10,7 +10,7 @@
 
 #include "LoopbackDriver.h"
 #include "catch2/catch_test_macros.hpp"
-#include "WinComLibPP/WinComLibPP.hpp"
+#include "ComLibPP.hpp"
 
 using namespace std::chrono_literals;
 
