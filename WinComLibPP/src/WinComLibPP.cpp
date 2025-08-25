@@ -17,7 +17,15 @@ wincom::SerialStreamBuf::SerialStreamBuf(ISerialDriver &driver)
 
 wincom::SerialStreamBuf::~SerialStreamBuf()
 {
-    SerialStreamBuf::sync();
+    try
+    {
+        if (m_Driver.isOpen())
+            (void)SerialStreamBuf::sync();
+    }
+    catch (...)
+    {
+        // ignore all exceptions in destructor
+    }
 }
 
 wincom::SerialStreamBuf::int_type wincom::SerialStreamBuf::underflow()

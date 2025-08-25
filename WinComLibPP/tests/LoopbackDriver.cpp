@@ -24,6 +24,7 @@ namespace wincom
 
         m_Settings = settings;
         m_Policy = timeoutPolicy;
+        m_IsOpen = true;
     }
 
     [[nodiscard]] bool LoopbackDriver::isOpen() const
