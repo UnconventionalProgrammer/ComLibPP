@@ -7,5 +7,5 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(catch2)
 
 add_executable(WinComLibPP_tests test_main.cpp)
-target_link_libraries(WinComLibPP_tests PRIVATE mylib::mylib Catch2::Catch2WithMain)
+target_link_libraries(WinComLibPP_tests PRIVATE WinComLibPP Catch2::Catch2WithMain)
 add_test(NAME WinComLibPP_tests COMMAND WinComLibPP_tests)

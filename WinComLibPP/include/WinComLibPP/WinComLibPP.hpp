@@ -54,7 +54,7 @@ private:
 // ------------------------------
 
 template <typename Driver>
-class WINCOMLIBPP_API SerialStream final : public std::iostream
+class SerialStream final : public std::iostream
 {
 public:
     template <typename ...Args>

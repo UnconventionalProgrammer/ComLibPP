@@ -12,13 +12,13 @@ namespace wincom
         this->open(std::move(portName), m_Settings, m_Policy);
     }
 
-    LoopbackDriver::~LoopbackDriver() override
+    LoopbackDriver::~LoopbackDriver()
     {
         LoopbackDriver::close();
     }
 
     void LoopbackDriver::open(std::string portName, const SerialSettings &settings,
-                              const TimeoutPolicy &timeoutPolicy) override
+                              const TimeoutPolicy &timeoutPolicy)
     {
         close();
 
@@ -26,12 +26,12 @@ namespace wincom
         m_Policy = timeoutPolicy;
     }
 
-    [[nodiscard]] bool LoopbackDriver::isOpen() const override
+    [[nodiscard]] bool LoopbackDriver::isOpen() const
     {
         return m_IsOpen;
     }
 
-    void LoopbackDriver::close() override
+    void LoopbackDriver::close()
     {
         if (isOpen())
         {
@@ -40,18 +40,18 @@ namespace wincom
         }
     }
 
-    void LoopbackDriver::setLineCoding(const SerialSettings &settings) override
+    void LoopbackDriver::setLineCoding(const SerialSettings &settings)
     {
         m_Settings = settings;
     }
 
-    void LoopbackDriver::setTimeouts(const TimeoutPolicy &policy) override
+    void LoopbackDriver::setTimeouts(const TimeoutPolicy &policy)
     {
         m_Policy = policy;
     }
 
     std::size_t LoopbackDriver::readSome(uint8_t *dst, std::size_t maxBytes,
-                                         std::chrono::milliseconds timeout) override
+                                         std::chrono::milliseconds timeout)
     {
         if (!isOpen())
             throw SerialError(std::make_error_code(std::errc::bad_file_descriptor), "readSome on closed port");
@@ -66,7 +66,7 @@ namespace wincom
     }
 
     std::size_t LoopbackDriver::writeSome(const uint8_t *src, std::size_t n,
-                                          std::chrono::milliseconds) override
+                                          std::chrono::milliseconds)
     {
         if (!isOpen())
             throw SerialError(std::make_error_code(std::errc::bad_file_descriptor), "writeSome on closed port");
@@ -77,7 +77,7 @@ namespace wincom
         return n;
     }
 
-    [[nodiscard]] std::size_t LoopbackDriver::bytesAvailable() const override
+    [[nodiscard]] std::size_t LoopbackDriver::bytesAvailable() const
     {
         if (!isOpen())
             return 0;
@@ -85,7 +85,7 @@ namespace wincom
         return m_Buffer.size();
     }
 
-    void LoopbackDriver::cancelIo() override
+    void LoopbackDriver::cancelIo()
     {
         m_IsOpen = false;
     }
@@ -95,12 +95,12 @@ namespace wincom
         throw std::runtime_error(what);
     }
 
-    const TimeoutPolicy &LoopbackDriver::getTimeoutPolicy() const override
+    const TimeoutPolicy &LoopbackDriver::getTimeoutPolicy() const
     {
         return m_Policy;
     }
 
-    const SerialSettings &LoopbackDriver::getSerialSettings() const override
+    const SerialSettings &LoopbackDriver::getSerialSettings() const
     {
         return m_Settings;
     }
