@@ -22,7 +22,7 @@ namespace wincom
 class SerialStreamBuf final : public std::streambuf
 {
 public:
-    explicit SerialStreamBuf(ISerialDriver &&driver);
+    explicit SerialStreamBuf(ISerialDriver &driver);
 
     ~SerialStreamBuf() override;
     SerialStreamBuf(const SerialStreamBuf&) = delete;
@@ -43,9 +43,9 @@ private:
     [[nodiscard]] std::chrono::milliseconds timeoutForWrite_() const;
 
 private:
-    ISerialDriver&         m_Driver;
-    std::vector<uint8_t>   m_InBuf;
-    std::vector<uint8_t>   m_OutBuf;
+    ISerialDriver           &m_Driver;
+    std::vector<uint8_t>     m_InBuf;
+    std::vector<uint8_t>     m_OutBuf;
 };
 
 
@@ -59,11 +59,16 @@ class SerialStream final : public std::iostream
 public:
     template <typename ...Args>
     explicit SerialStream(Args ...args)
-        : std::iostream(nullptr),
-          m_Buf(Driver{std::forward<Args>(args)...})
+        : std::iostream(nullptr), m_Driver(std::forward<Args>(args)...),
+          m_Buf(m_Driver)
     {
         std::iostream::rdbuf(&m_Buf);
         unsetf(std::ios::skipws); // binary-friendly
+    }
+
+    ~SerialStream() override
+    {
+        std::iostream::rdbuf(nullptr);
     }
 
     SerialStreamBuf* rdbuf()
@@ -72,6 +77,7 @@ public:
     }
 
 private:
+    Driver m_Driver;
     SerialStreamBuf m_Buf;
 };
 

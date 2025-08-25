@@ -1,4 +1,3 @@
-// tests/test_serialstream_loopback.cpp
 #include <catch2/catch_all.hpp>
 
 #include <string>
@@ -8,7 +7,6 @@
 #include <cstdint>
 #include <iostream>
 
-// Adjust include paths to your project layout:
 
 #include "LoopbackDriver.h"
 #include "catch2/catch_test_macros.hpp"
@@ -35,7 +33,7 @@ static wincom::SerialStream<Driver> makeStream()
         200ms    // write timeout
     };
 
-    return wincom::SerialStream<Driver>(kPort, settings, timeouts);
+    return wincom::SerialStream<Driver>{kPort, settings, timeouts};
 }
 
 TEST_CASE("Text round-trip via SerialStream", "[serial][text]")

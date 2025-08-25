@@ -35,7 +35,7 @@ namespace wincom
     {
         if (isOpen())
         {
-            m_buffer.clear();
+            m_Buffer.clear();
             m_IsOpen = false;
         }
     }
@@ -90,17 +90,17 @@ namespace wincom
         m_IsOpen = false;
     }
 
-    static void LoopbackDriver::throwLastError_(const char *what)
+    void LoopbackDriver::throwLastError_(const char *what)
     {
         throw std::runtime_error(what);
     }
 
-    const TimeoutPolicy &LoopbackDriver::getTimeoutPolicy() const
+    const LoopbackDriver::TimeoutPolicy &LoopbackDriver::getTimeoutPolicy() const
     {
         return m_Policy;
     }
 
-    const SerialSettings &LoopbackDriver::getSerialSettings() const
+    const LoopbackDriver::SerialSettings &LoopbackDriver::getSerialSettings() const
     {
         return m_Settings;
     }

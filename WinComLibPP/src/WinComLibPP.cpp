@@ -1,6 +1,6 @@
 #include "WinComLibPP/WinComLibPP.hpp"
 
-wincom::SerialStreamBuf::SerialStreamBuf(ISerialDriver &&driver)
+wincom::SerialStreamBuf::SerialStreamBuf(ISerialDriver &driver)
         : m_Driver{driver},
           m_InBuf(4096),
           m_OutBuf(4096)
