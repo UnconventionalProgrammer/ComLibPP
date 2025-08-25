@@ -71,9 +71,9 @@ endfunction()
 file(GLOB_RECURSE COMLIBPP_SOURCES CONFIGURE_DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 set(COMLIBPP_PUBLIC_HEADERS
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/export.hpp
+        include/ucpgr/export.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/serial_stream.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/ISerialDriver.hpp
+        include/ucpgr/ISerialDriver.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/Win32Serial.hpp
 )
 
