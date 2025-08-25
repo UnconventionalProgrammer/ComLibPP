@@ -2,7 +2,7 @@
 #include <format>
 #include "COMLIBPP/Win32SerialDriver.hpp"
 #include "COMLIBPP/COMLIBPP.hpp"
-test
+
 using namespace std::chrono_literals;
 
 int main()
