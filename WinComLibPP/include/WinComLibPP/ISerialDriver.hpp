@@ -63,6 +63,11 @@ public:
 
     // cancel any blocking I/O (e.g., from another thread)
     virtual void cancelIo() = 0;
+
+    const virtual TimeoutPolicy& getTimeoutPolicy() const = 0;
+    const virtual SerialSettings& getSerialSettings() const = 0;
+
+private:
 };
 
 #endif //WINCOMLIBPP_ISERIALDRIVER_HPP

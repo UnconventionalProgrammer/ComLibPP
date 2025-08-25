@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 project(WinComLibPP VERSION 0.1.0 LANGUAGES CXX)
 
 option(WINCOMLIBPP_BUILD_SHARED        "Build shared library"          OFF)
-option(WINCOMLIBPP_BUILD_TESTS         "Build tests"                   OFF)
+option(WINCOMLIBPP_BUILD_TESTS         "Build tests"                   ON)
 option(WINCOMLIBPP_WARNINGS_AS_ERRORS  "Treat warnings as errors"      ON)
 
 
@@ -126,8 +126,8 @@ target_link_libraries(example_minimal PRIVATE jnz::WinComLibPP)
 set_example_output(example_minimal)
 
 # Tests
-#include(CTest)
-#if (MYLIB_BUILD_TESTS)
-#    add_subdirectory(tests)
-#endif()
-
+include(CTest)
+if (WINCOMLIBPP_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif ()

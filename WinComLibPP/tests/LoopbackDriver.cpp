@@ -1,0 +1,107 @@
+//
+// Created by didal on 25/08/2025.
+//
+
+#include "LoopbackDriver.h"
+
+namespace wincom
+{
+    LoopbackDriver::LoopbackDriver(std::string portName, const SerialSettings &settings,
+                                   const TimeoutPolicy &timeoutPolicy) : m_Policy(timeoutPolicy), m_Settings(settings)
+    {
+        this->open(std::move(portName), m_Settings, m_Policy);
+    }
+
+    LoopbackDriver::~LoopbackDriver() override
+    {
+        LoopbackDriver::close();
+    }
+
+    void LoopbackDriver::open(std::string portName, const SerialSettings &settings,
+                              const TimeoutPolicy &timeoutPolicy) override
+    {
+        close();
+
+        m_Settings = settings;
+        m_Policy = timeoutPolicy;
+    }
+
+    [[nodiscard]] bool LoopbackDriver::isOpen() const override
+    {
+        return m_IsOpen;
+    }
+
+    void LoopbackDriver::close() override
+    {
+        if (isOpen())
+        {
+            m_buffer.clear();
+            m_IsOpen = false;
+        }
+    }
+
+    void LoopbackDriver::setLineCoding(const SerialSettings &settings) override
+    {
+        m_Settings = settings;
+    }
+
+    void LoopbackDriver::setTimeouts(const TimeoutPolicy &policy) override
+    {
+        m_Policy = policy;
+    }
+
+    std::size_t LoopbackDriver::readSome(uint8_t *dst, std::size_t maxBytes,
+                                         std::chrono::milliseconds timeout) override
+    {
+        if (!isOpen())
+            throw SerialError(std::make_error_code(std::errc::bad_file_descriptor), "readSome on closed port");
+
+        std::size_t toRead = std::min(maxBytes, m_Buffer.size());
+        if (toRead == 0)
+            return 0;
+
+        memcpy(dst, m_Buffer.data(), toRead);
+        m_Buffer.erase(m_Buffer.begin(), m_Buffer.begin() + toRead);
+        return toRead;
+    }
+
+    std::size_t LoopbackDriver::writeSome(const uint8_t *src, std::size_t n,
+                                          std::chrono::milliseconds) override
+    {
+        if (!isOpen())
+            throw SerialError(std::make_error_code(std::errc::bad_file_descriptor), "writeSome on closed port");
+
+        std::span data{src, n};
+        m_Buffer.insert(m_Buffer.end(), data.begin(), data.end());
+
+        return n;
+    }
+
+    [[nodiscard]] std::size_t LoopbackDriver::bytesAvailable() const override
+    {
+        if (!isOpen())
+            return 0;
+
+        return m_Buffer.size();
+    }
+
+    void LoopbackDriver::cancelIo() override
+    {
+        m_IsOpen = false;
+    }
+
+    static void LoopbackDriver::throwLastError_(const char *what)
+    {
+        throw std::runtime_error(what);
+    }
+
+    const TimeoutPolicy &LoopbackDriver::getTimeoutPolicy() const override
+    {
+        return m_Policy;
+    }
+
+    const SerialSettings &LoopbackDriver::getSerialSettings() const override
+    {
+        return m_Settings;
+    }
+} // wincom

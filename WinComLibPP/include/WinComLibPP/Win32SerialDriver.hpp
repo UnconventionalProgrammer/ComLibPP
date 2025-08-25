@@ -24,9 +24,9 @@ namespace wincom
 class WINCOMLIBPP_API Win32Serial final : public ISerialDriver
 {
 public:
-    Win32Serial(std::string portName, const SerialSettings &settings, const TimeoutPolicy &timeoutPolicy)
+    Win32Serial(std::string portName, const SerialSettings &settings, const TimeoutPolicy &timeoutPolicy) : m_Policy(timeoutPolicy), m_Settings(settings)
     {
-        this->open(std::move(portName), settings, timeoutPolicy);
+        this->open(std::move(portName), m_Settings, m_Policy);
     }
     ~Win32Serial() override
     {
@@ -36,6 +36,10 @@ public:
     void open(std::string portName, const SerialSettings &settings, const TimeoutPolicy &timeoutPolicy) override
     {
         close();
+
+        m_Settings = settings;
+        m_Policy = timeoutPolicy;
+
         if (portName.rfind(R"(\\.\)", 0) != 0)
         {
             portName = R"(\\.\)" + portName;
@@ -51,8 +55,8 @@ public:
             throwLastError_("CreateFileA");
         }
 
-        setLineCoding(settings);
-        setTimeouts(timeoutPolicy);
+        setLineCoding(m_Settings);
+        setTimeouts(m_Policy);
 
         // clear buffers
         SetupComm(m_Handle, 1 << 16, 1 << 16);
@@ -296,9 +300,19 @@ private:
         throw SerialError(std::error_code(static_cast<int>(GetLastError()), std::system_category()), what);
     }
 
+    const TimeoutPolicy& getTimeoutPolicy() const override
+    {
+        return m_Policy;
+    }
+    const SerialSettings& getSerialSettings() const override
+    {
+        return m_Settings;
+    }
+
 private:
     HANDLE          m_Handle { INVALID_HANDLE_VALUE };
     TimeoutPolicy   m_Policy {};
+    SerialSettings  m_Settings {};
 };
 
 } // namespace wincom
