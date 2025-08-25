@@ -1,7 +1,7 @@
 //
 // Created by didal on 25/08/2025.
 //
-
+#include <cstring>
 #include "LoopbackDriver.h"
 
 namespace wincom
