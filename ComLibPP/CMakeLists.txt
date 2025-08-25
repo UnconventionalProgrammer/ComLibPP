@@ -74,14 +74,14 @@ set(COMLIBPP_PUBLIC_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/include/ucpgr/export.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/ucpgr/ComLibPP.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/ucpgr/ISerialDriver.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/ucpgr/Win32Serial.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/ucpgr/Win32SerialDriver.hpp
 )
 
 if (COMLIBPP_BUILD_SHARED)
     add_library(ComLibPP SHARED ${COMLIBPP_SOURCES})
     target_compile_definitions(ComLibPP PRIVATE COMLIBPP_BUILD_SHARED)
 else()
-    add_library(ComLibPP STATIC ${COMLIBPP_SOURCES})
+    add_library(ComLibPP STATIC ${COMLIBPP_SOURCES} ${COMLIBPP_PUBLIC_HEADERS})
 endif()
 add_library(wincom::ComLibPP ALIAS ComLibPP)
 
