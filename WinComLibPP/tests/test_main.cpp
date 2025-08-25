@@ -18,27 +18,28 @@ using namespace std::chrono_literals;
 using Driver = wincom::LoopbackDriver;
 static constexpr const char* kPort = "LOOPBACK";
 
-static wincom::SerialStream<Driver> makeStream()
+static Driver::SerialSettings makeSettings()
 {
-    Driver::SerialSettings settings{
+    return Driver::SerialSettings{
         115200,
         8,
         Driver::Parity::none,
         Driver::StopBits::one
     };
+}
 
-    Driver::TimeoutPolicy timeouts{
+static Driver::TimeoutPolicy makePolicy()
+{
+    return Driver::TimeoutPolicy{
         Driver::TimeoutMode::finite,
         100ms,   // read timeout
         200ms    // write timeout
     };
-
-    return wincom::SerialStream<Driver>{kPort, settings, timeouts};
 }
 
 TEST_CASE("Text round-trip via SerialStream", "[serial][text]")
 {
-    auto stream = makeStream();
+    wincom::SerialStream<wincom::LoopbackDriver> stream{std::string{kPort}, makeSettings(), makePolicy()};
 
     const std::string msg = "Hello, world!";
     SECTION("write with newline, read with getline")
@@ -53,7 +54,7 @@ TEST_CASE("Text round-trip via SerialStream", "[serial][text]")
 
 TEST_CASE("Binary round-trip via SerialStream", "[serial][binary]")
 {
-    auto stream = makeStream();
+    wincom::SerialStream<wincom::LoopbackDriver> stream{std::string{kPort}, makeSettings(), makePolicy()};
 
     const std::array<uint8_t, 6> outBuf{ 0x00, 0x01, 0x02, 0xFE, 0xFF, 0x7F };
 
@@ -75,7 +76,7 @@ TEST_CASE("Binary round-trip via SerialStream", "[serial][binary]")
 
 TEST_CASE("Multiple writes preserve ordering", "[serial][ordering]")
 {
-    auto stream = makeStream();
+    wincom::SerialStream<wincom::LoopbackDriver> stream{std::string{kPort}, makeSettings(), makePolicy()};
 
     SECTION("two lines written -> two lines read in order")
     {

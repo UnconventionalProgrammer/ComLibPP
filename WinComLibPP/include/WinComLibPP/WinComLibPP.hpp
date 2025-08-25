@@ -71,6 +71,10 @@ public:
         std::iostream::rdbuf(nullptr);
     }
 
+    SerialStream(const SerialStream&) = delete;
+    SerialStream& operator=(const SerialStream&) = delete;
+    SerialStream& operator=(SerialStream&&) = delete;
+
     SerialStreamBuf* rdbuf()
     {
         return &m_Buf;
