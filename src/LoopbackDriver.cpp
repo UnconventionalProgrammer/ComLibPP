@@ -17,7 +17,7 @@ namespace ucpgr
         LoopbackDriver::close();
     }
 
-    void LoopbackDriver::open(std::string portName, const SerialSettings &settings,
+    void LoopbackDriver::open(std::string, const SerialSettings &settings,
                               const TimeoutPolicy &timeoutPolicy)
     {
         close();
@@ -52,7 +52,7 @@ namespace ucpgr
     }
 
     std::size_t LoopbackDriver::readSome(uint8_t *dst, std::size_t maxBytes,
-                                         std::chrono::milliseconds timeout)
+                                         std::chrono::milliseconds)
     {
         if (!isOpen())
             throw SerialError(std::make_error_code(std::errc::bad_file_descriptor), "readSome on closed port");
