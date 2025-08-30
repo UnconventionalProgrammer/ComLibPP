@@ -46,6 +46,7 @@ namespace ucpgr
 
         // open/close
         virtual void open(std::string portName, const SerialSettings &settings, const TimeoutPolicy &timeoutPolicy) = 0;
+        virtual void open(std::string portName, uint32_t baud) = 0;
         [[nodiscard]] virtual bool isOpen() const = 0;
         virtual void close() = 0;
 

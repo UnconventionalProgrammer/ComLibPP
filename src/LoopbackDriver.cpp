@@ -12,6 +12,11 @@ namespace ucpgr
         this->open(std::move(portName), m_Settings, m_Policy);
     }
 
+    LoopbackDriver::LoopbackDriver(std::string portName, uint32_t baud)
+    {
+        this->open(std::move(portName), baud);
+    }
+
     LoopbackDriver::~LoopbackDriver()
     {
         LoopbackDriver::close();
@@ -24,6 +29,15 @@ namespace ucpgr
 
         m_Settings = settings;
         m_Policy = timeoutPolicy;
+        m_IsOpen = true;
+    }
+
+    void LoopbackDriver::open(std::string, const uint32_t baud)
+    {
+        close();
+
+        m_Settings = {.baud=baud};
+        m_Policy = {};
         m_IsOpen = true;
     }
 

@@ -28,6 +28,13 @@ public:
     {
         this->open(std::move(portName), m_Settings, m_Policy);
     }
+
+    Win32Serial(std::string portName, uint32_t baud) : m_Policy({}), m_Settings({.baud=baud})
+    {
+        this->open(std::move(portName), m_Settings, m_Policy);
+    }
+
+
     ~Win32Serial() override
     {
         Win32Serial::close();
@@ -61,6 +68,11 @@ public:
         // clear buffers
         SetupComm(m_Handle, 1 << 16, 1 << 16);
         PurgeComm(m_Handle, PURGE_RXCLEAR | PURGE_TXCLEAR | PURGE_RXABORT | PURGE_TXABORT);
+    }
+
+    void open(std::string portName, uint32_t baud) override
+    {
+        open(portName, {.baud=baud}, {});
     }
 
     [[nodiscard]] bool isOpen() const override
