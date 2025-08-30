@@ -26,7 +26,7 @@ namespace wincom
         void cancelIo() override;
 
     private:
-        static void throwLastError_(const char* what);
+        [[maybe_unused]]  void throwLastError_(const char* what);
         const TimeoutPolicy& getTimeoutPolicy() const override;
         const SerialSettings& getSerialSettings() const override;
 
