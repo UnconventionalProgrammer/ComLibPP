@@ -116,7 +116,7 @@ endfunction()
 # -----------------------------------------
 # Collect sources (swap to explicit list if you prefer; glob is OK for now)
 file(GLOB_RECURSE COMLIBPP_SOURCES CONFIGURE_DEPENDS
-        ../src/*.cpp)
+        src/*.cpp)
 set(COMLIBPP_PUBLIC_HEADERS
         include/ucpgr/export.hpp
         include/ucpgr/ComLibPP.hpp
@@ -205,4 +205,3 @@ endif()
 
 
 enable_cppcheck_for(ComLibPP)
-enable_cppcheck_for(example_minimal)
