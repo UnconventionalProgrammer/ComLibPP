@@ -38,7 +38,7 @@ static Driver::TimeoutPolicy makePolicy()
 
 TEST_CASE("Text round-trip via SerialStream", "[serial][text]")
 {
-    ucpgr::SerialStream<ucpgr::LoopbackDriver> stream{std::string{kPort}, makeSettings(), makePolicy()};
+    ucpgr::SerialStream<ucpgr::LoopbackDriver> stream{std::string{kPort}};
 
     const std::string msg = "Hello, world!";
     SECTION("write with newline, read with getline")
@@ -53,7 +53,7 @@ TEST_CASE("Text round-trip via SerialStream", "[serial][text]")
 
 TEST_CASE("Binary round-trip via SerialStream", "[serial][binary]")
 {
-    ucpgr::SerialStream<ucpgr::LoopbackDriver> stream{std::string{kPort}, makeSettings(), makePolicy()};
+    ucpgr::SerialStream<ucpgr::LoopbackDriver> stream{std::string{kPort}};
 
     const std::array<uint8_t, 6> outBuf{ 0x00, 0x01, 0x02, 0xFE, 0xFF, 0x7F };
 
@@ -75,7 +75,7 @@ TEST_CASE("Binary round-trip via SerialStream", "[serial][binary]")
 
 TEST_CASE("Multiple writes preserve ordering", "[serial][ordering]")
 {
-    ucpgr::SerialStream<ucpgr::LoopbackDriver> stream{std::string{kPort}, makeSettings(), makePolicy()};
+    ucpgr::SerialStream<ucpgr::LoopbackDriver> stream{std::string{kPort}};
 
     SECTION("two lines written -> two lines read in order")
     {

@@ -24,7 +24,7 @@ namespace ucpgr
 class COMLIBPP_API Win32Serial final : public ISerialDriver
 {
 public:
-    Win32Serial(std::string portName, const SerialSettings &settings, const TimeoutPolicy &timeoutPolicy) : m_Policy(timeoutPolicy), m_Settings(settings)
+    Win32Serial(std::string portName, const SerialSettings &settings = {}, const TimeoutPolicy &timeoutPolicy = {}) : m_Policy(timeoutPolicy), m_Settings(settings)
     {
         this->open(std::move(portName), m_Settings, m_Policy);
     }

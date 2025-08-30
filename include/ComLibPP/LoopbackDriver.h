@@ -12,7 +12,7 @@ namespace ucpgr
     class LoopbackDriver final : public ISerialDriver
     {
     public:
-        LoopbackDriver(std::string portName, const SerialSettings &settings, const TimeoutPolicy &timeoutPolicy);
+        LoopbackDriver(std::string portName, const SerialSettings &settings = {}, const TimeoutPolicy &timeoutPolicy = {});
         ~LoopbackDriver() override;
         void open(std::string portName, const SerialSettings &settings, const TimeoutPolicy &timeoutPolicy) override;
         [[nodiscard]] bool isOpen() const override;

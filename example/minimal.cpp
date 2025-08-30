@@ -7,8 +7,8 @@ using namespace std::chrono_literals;
 
 int main()
 {
-    ucpgr::SerialStream<ucpgr::Win32Serial> stream("COM1", ucpgr::Win32Serial::SerialSettings{115200, 8, ucpgr::Win32Serial::Parity::none, ucpgr::Win32Serial::StopBits::one}, ucpgr::Win32Serial::TimeoutPolicy{ucpgr::Win32Serial::TimeoutMode::finite, 100ms, 200ms});
-    ucpgr::SerialStream<ucpgr::Win32Serial> stream2("COM2", ucpgr::Win32Serial::SerialSettings{115200, 8, ucpgr::Win32Serial::Parity::none, ucpgr::Win32Serial::StopBits::one}, ucpgr::Win32Serial::TimeoutPolicy{ucpgr::Win32Serial::TimeoutMode::finite, 100ms, 200ms});
+    ucpgr::SerialStream<ucpgr::Win32Serial> stream("COM1");
+    ucpgr::SerialStream<ucpgr::Win32Serial> stream2("COM2");
 
     stream << "Bonjour" << std::flush;
     stream2 << "Hello" << std::flush;
