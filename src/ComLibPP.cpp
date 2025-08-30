@@ -1,7 +1,7 @@
 #include <cstring>
 #include <ComLibPP/ComLibPP.hpp>
 
-wincom::SerialStreamBuf::SerialStreamBuf(ISerialDriver &driver)
+ucpgr::SerialStreamBuf::SerialStreamBuf(ISerialDriver &driver)
         : m_Driver{driver},
           m_InBuf(4096),
           m_OutBuf(4096)
@@ -16,7 +16,7 @@ wincom::SerialStreamBuf::SerialStreamBuf(ISerialDriver &driver)
          reinterpret_cast<char*>(m_OutBuf.data() + m_OutBuf.size()));
 }
 
-wincom::SerialStreamBuf::~SerialStreamBuf()
+ucpgr::SerialStreamBuf::~SerialStreamBuf()
 {
     try
     {
@@ -29,7 +29,7 @@ wincom::SerialStreamBuf::~SerialStreamBuf()
     }
 }
 
-wincom::SerialStreamBuf::int_type wincom::SerialStreamBuf::underflow()
+ucpgr::SerialStreamBuf::int_type ucpgr::SerialStreamBuf::underflow()
 {
     if (gptr() < egptr())
     {
@@ -53,12 +53,12 @@ wincom::SerialStreamBuf::int_type wincom::SerialStreamBuf::underflow()
 }
 
 // flush put area
-int wincom::SerialStreamBuf::sync()
+int ucpgr::SerialStreamBuf::sync()
 {
     return flushOut_() ? 0 : -1;
 }
 
-std::streambuf::int_type wincom::SerialStreamBuf::overflow(int_type ch)
+std::streambuf::int_type ucpgr::SerialStreamBuf::overflow(int_type ch)
 {
     if (!traits_type::eq_int_type(ch, traits_type::eof()))
     {
@@ -68,7 +68,7 @@ std::streambuf::int_type wincom::SerialStreamBuf::overflow(int_type ch)
     return flushOut_() ? traits_type::not_eof(ch) : traits_type::eof();
 }
 
-std::streamsize wincom::SerialStreamBuf::xsputn(const char* s, std::streamsize n)
+std::streamsize ucpgr::SerialStreamBuf::xsputn(const char* s, std::streamsize n)
 {
     std::streamsize total = 0;
     while (n > 0)
@@ -101,7 +101,7 @@ std::streamsize wincom::SerialStreamBuf::xsputn(const char* s, std::streamsize n
     return total;
 }
 
-std::streamsize wincom::SerialStreamBuf::xsgetn(char* s, std::streamsize n)
+std::streamsize ucpgr::SerialStreamBuf::xsgetn(char* s, std::streamsize n)
 {
     std::streamsize total = 0;
 
@@ -127,18 +127,18 @@ std::streamsize wincom::SerialStreamBuf::xsgetn(char* s, std::streamsize n)
     return total;
 }
 
-std::streambuf::pos_type wincom::SerialStreamBuf::seekoff(off_type, std::ios_base::seekdir, std::ios_base::openmode)
+std::streambuf::pos_type ucpgr::SerialStreamBuf::seekoff(off_type, std::ios_base::seekdir, std::ios_base::openmode)
 {
     return {static_cast<off_type>(-1)};
 }
 
-std::streambuf::pos_type wincom::SerialStreamBuf::seekpos(pos_type, std::ios_base::openmode)
+std::streambuf::pos_type ucpgr::SerialStreamBuf::seekpos(pos_type, std::ios_base::openmode)
 {
     return {static_cast<off_type>(-1)};
 }
 
 
-bool wincom::SerialStreamBuf::flushOut_()
+bool ucpgr::SerialStreamBuf::flushOut_()
 {
     auto n = static_cast<std::size_t>(pptr() - pbase());
     if (n == 0)
@@ -179,7 +179,7 @@ bool wincom::SerialStreamBuf::flushOut_()
     return written > 0 || remaining == 0;
 }
 
-[[nodiscard]] std::chrono::milliseconds wincom::SerialStreamBuf::timeoutForRead_() const
+[[nodiscard]] std::chrono::milliseconds ucpgr::SerialStreamBuf::timeoutForRead_() const
 {
     switch (m_Driver.getTimeoutPolicy().mode)
     {
@@ -190,7 +190,7 @@ bool wincom::SerialStreamBuf::flushOut_()
     return m_Driver.getTimeoutPolicy().readTimeout;
 }
 
-[[nodiscard]] std::chrono::milliseconds wincom::SerialStreamBuf::timeoutForWrite_() const
+[[nodiscard]] std::chrono::milliseconds ucpgr::SerialStreamBuf::timeoutForWrite_() const
 {
     switch (m_Driver.getTimeoutPolicy().mode)
     {

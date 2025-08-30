@@ -12,7 +12,7 @@
 
 #include "ISerialDriver.hpp"
 
-namespace wincom
+namespace ucpgr
 {
 
 class SerialStreamBuf final : public std::streambuf

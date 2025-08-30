@@ -4,7 +4,7 @@
 #include <cstring>
 #include "../include/ComLibPP/LoopbackDriver.h"
 
-namespace wincom
+namespace ucpgr
 {
     LoopbackDriver::LoopbackDriver(std::string portName, const SerialSettings &settings,
                                    const TimeoutPolicy &timeoutPolicy) : m_Policy(timeoutPolicy), m_Settings(settings)

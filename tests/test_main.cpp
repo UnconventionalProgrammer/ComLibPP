@@ -14,7 +14,7 @@
 using namespace std::chrono_literals;
 
 
-using Driver = wincom::LoopbackDriver;
+using Driver = ucpgr::LoopbackDriver;
 static constexpr const char* kPort = "LOOPBACK";
 
 static Driver::SerialSettings makeSettings()
@@ -38,7 +38,7 @@ static Driver::TimeoutPolicy makePolicy()
 
 TEST_CASE("Text round-trip via SerialStream", "[serial][text]")
 {
-    wincom::SerialStream<wincom::LoopbackDriver> stream{std::string{kPort}, makeSettings(), makePolicy()};
+    ucpgr::SerialStream<ucpgr::LoopbackDriver> stream{std::string{kPort}, makeSettings(), makePolicy()};
 
     const std::string msg = "Hello, world!";
     SECTION("write with newline, read with getline")
@@ -53,7 +53,7 @@ TEST_CASE("Text round-trip via SerialStream", "[serial][text]")
 
 TEST_CASE("Binary round-trip via SerialStream", "[serial][binary]")
 {
-    wincom::SerialStream<wincom::LoopbackDriver> stream{std::string{kPort}, makeSettings(), makePolicy()};
+    ucpgr::SerialStream<ucpgr::LoopbackDriver> stream{std::string{kPort}, makeSettings(), makePolicy()};
 
     const std::array<uint8_t, 6> outBuf{ 0x00, 0x01, 0x02, 0xFE, 0xFF, 0x7F };
 
@@ -75,7 +75,7 @@ TEST_CASE("Binary round-trip via SerialStream", "[serial][binary]")
 
 TEST_CASE("Multiple writes preserve ordering", "[serial][ordering]")
 {
-    wincom::SerialStream<wincom::LoopbackDriver> stream{std::string{kPort}, makeSettings(), makePolicy()};
+    ucpgr::SerialStream<ucpgr::LoopbackDriver> stream{std::string{kPort}, makeSettings(), makePolicy()};
 
     SECTION("two lines written -> two lines read in order")
     {

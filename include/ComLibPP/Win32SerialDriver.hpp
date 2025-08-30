@@ -19,7 +19,7 @@
 #include "ISerialDriver.hpp"
 #include "export.hpp"
 
-namespace wincom
+namespace ucpgr
 {
 class COMLIBPP_API Win32Serial final : public ISerialDriver
 {

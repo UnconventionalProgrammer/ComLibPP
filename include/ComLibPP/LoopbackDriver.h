@@ -7,7 +7,7 @@
 
 #include "ISerialDriver.hpp"
 
-namespace wincom
+namespace ucpgr
 {
     class LoopbackDriver final : public ISerialDriver
     {
