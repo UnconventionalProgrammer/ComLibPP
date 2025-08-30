@@ -1,5 +1,5 @@
 #include <cstring>
-#include <ucpgr/ComLibPP.hpp>
+#include <ComLibPP/ComLibPP.hpp>
 
 wincom::SerialStreamBuf::SerialStreamBuf(ISerialDriver &driver)
         : m_Driver{driver},

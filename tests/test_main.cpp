@@ -7,9 +7,9 @@
 #include <iostream>
 
 
-#include "LoopbackDriver.h"
+#include "ComLibPP/LoopbackDriver.h"
 #include "catch2/catch_test_macros.hpp"
-#include <ucpgr/ComLibPP.hpp>
+#include <ComLibPP/ComLibPP.hpp>
 
 using namespace std::chrono_literals;
 

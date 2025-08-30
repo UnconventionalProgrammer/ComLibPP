@@ -5,7 +5,7 @@
 #ifndef COMLIBPP_LOOPBACKDRIVER_H
 #define COMLIBPP_LOOPBACKDRIVER_H
 
-#include "../include/ucpgr/ISerialDriver.hpp"
+#include "ISerialDriver.hpp"
 
 namespace wincom
 {

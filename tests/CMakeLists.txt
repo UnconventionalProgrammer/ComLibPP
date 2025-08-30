@@ -6,6 +6,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(catch2)
 
-add_executable(ComLibPP_tests test_main.cpp LoopbackDriver.cpp)
-target_link_libraries(ComLibPP_tests PRIVATE ComLibPP Catch2::Catch2WithMain)
-add_test(NAME ComLibPP_tests COMMAND ComLibPP_tests)
+file(GLOB TEST_SRCS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
+
+add_executable(comlibpp_tests ${TEST_SRCS})
+target_link_libraries(comlibpp_tests PRIVATE ucpgr::ComLibPP Catch2::Catch2WithMain)
+add_test(NAME comlibpp_tests COMMAND comlibpp_tests)
